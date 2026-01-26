@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Globe, Play, Trophy, History, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
 export default function Index() {
-  const { user, loading, signOut } = useAuth();
-
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
+  const {
+    user,
+    loading,
+    signOut
+  } = useAuth();
+  return <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -23,23 +24,17 @@ export default function Index() {
               <Trophy className="w-4 h-4" />
               <span className="hidden sm:inline">Leaderboard</span>
             </Link>
-            {user && (
-              <Link to="/history" className="nav-link flex items-center gap-2">
+            {user && <Link to="/history" className="nav-link flex items-center gap-2">
                 <History className="w-4 h-4" />
                 <span className="hidden sm:inline">History</span>
-              </Link>
-            )}
-            {loading ? null : user ? (
-              <Button variant="ghost" onClick={signOut} className="nav-link flex items-center gap-2">
+              </Link>}
+            {loading ? null : user ? <Button variant="ghost" onClick={signOut} className="nav-link flex items-center gap-2">
                 <LogOut className="w-4 h-4" />
                 <span className="hidden sm:inline">Sign Out</span>
-              </Button>
-            ) : (
-              <Link to="/login" className="nav-link flex items-center gap-2">
+              </Button> : <Link to="/login" className="nav-link flex items-center gap-2">
                 <User className="w-4 h-4" />
                 <span>Sign In</span>
-              </Link>
-            )}
+              </Link>}
           </nav>
         </div>
       </header>
@@ -60,15 +55,13 @@ export default function Index() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/game" className="game-button inline-flex items-center justify-center gap-2 text-lg">
+            <Link to="/game" className="game-button inline-flex items-center justify-center gap-2 text-lg px-[10px] py-[10px] my-[5px] mx-[5px] bg-secondary">
               <Play className="w-5 h-5" />
               Start Playing
             </Link>
-            {!user && !loading && (
-              <Link to="/signup" className="px-6 py-3 rounded-lg font-semibold border border-border hover:bg-secondary transition-colors">
+            {!user && !loading && <Link to="/signup" className="px-6 py-3 rounded-lg font-semibold border border-border hover:bg-secondary transition-colors">
                 Create Account
-              </Link>
-            )}
+              </Link>}
           </div>
 
           <div className="mt-12 grid grid-cols-3 gap-6 text-center">
@@ -87,6 +80,5 @@ export default function Index() {
           </div>
         </div>
       </main>
-    </div>
-  );
+    </div>;
 }
