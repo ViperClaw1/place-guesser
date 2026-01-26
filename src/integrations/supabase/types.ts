@@ -16,11 +16,15 @@ export type Database = {
     Tables: {
       game_rounds: {
         Row: {
+          actual_city: string | null
+          actual_country: string | null
           actual_lat: number
           actual_lng: number
           created_at: string
           distance_km: number | null
           game_id: string
+          guess_city: string | null
+          guess_country: string | null
           guess_lat: number | null
           guess_lng: number | null
           id: string
@@ -28,11 +32,15 @@ export type Database = {
           score: number | null
         }
         Insert: {
+          actual_city?: string | null
+          actual_country?: string | null
           actual_lat: number
           actual_lng: number
           created_at?: string
           distance_km?: number | null
           game_id: string
+          guess_city?: string | null
+          guess_country?: string | null
           guess_lat?: number | null
           guess_lng?: number | null
           id?: string
@@ -40,11 +48,15 @@ export type Database = {
           score?: number | null
         }
         Update: {
+          actual_city?: string | null
+          actual_country?: string | null
           actual_lat?: number
           actual_lng?: number
           created_at?: string
           distance_km?: number | null
           game_id?: string
+          guess_city?: string | null
+          guess_country?: string | null
           guess_lat?: number | null
           guess_lng?: number | null
           id?: string
@@ -137,6 +149,7 @@ export type Database = {
           rank: number | null
           total_games: number | null
           total_score: number | null
+          user_id: string | null
           username: string | null
         }
         Relationships: []

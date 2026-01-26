@@ -124,6 +124,12 @@ export function useGame() {
       locationInfo,
     };
 
+    // Get location info for the guess as well
+    const guessLocationInfo = await reverseGeocode(
+      gameState.guessLocation.lat,
+      gameState.guessLocation.lng
+    );
+
     // Save round to database
     if (user && gameState.gameId) {
       await supabase.from('game_rounds').insert({
@@ -135,6 +141,10 @@ export function useGame() {
         guess_lng: gameState.guessLocation.lng,
         distance_km: distance,
         score,
+        actual_city: locationInfo?.city || null,
+        actual_country: locationInfo?.country || null,
+        guess_city: guessLocationInfo?.city || null,
+        guess_country: guessLocationInfo?.country || null,
       });
     }
 

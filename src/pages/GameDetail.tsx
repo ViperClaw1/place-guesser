@@ -1,11 +1,11 @@
 /// <reference types="@types/google.maps" />
 import { useEffect, useState, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useGoogleMaps } from '@/hooks/useGoogleMaps';
 import { format } from 'date-fns';
-import { ArrowLeft, MapPin, Navigation, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, MapPin, Navigation, Trophy, ChevronLeft, ChevronRight, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface GameRound {
@@ -17,6 +17,10 @@ interface GameRound {
   guess_lng: number | null;
   distance_km: number | null;
   score: number;
+  actual_city: string | null;
+  actual_country: string | null;
+  guess_city: string | null;
+  guess_country: string | null;
 }
 
 interface GameData {
@@ -24,10 +28,13 @@ interface GameData {
   total_score: number;
   rounds_played: number;
   created_at: string;
+  user_id: string;
 }
 
 export default function GameDetail() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const backTo = searchParams.get('from') || 'history';
   const { user } = useAuth();
   const { isLoaded } = useGoogleMaps();
   const [game, setGame] = useState<GameData | null>(null);
@@ -40,7 +47,7 @@ export default function GameDetail() {
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
-    if (!user || !id) {
+    if (!id) {
       setLoading(false);
       return;
     }
@@ -51,8 +58,7 @@ export default function GameDetail() {
           .from('games')
           .select('*')
           .eq('id', id)
-          .eq('user_id', user.id)
-          .single(),
+          .maybeSingle(),
         supabase
           .from('game_rounds')
           .select('*')
@@ -64,13 +70,13 @@ export default function GameDetail() {
         setGame(gameResult.data);
       }
       if (!roundsResult.error && roundsResult.data) {
-        setRounds(roundsResult.data);
+        setRounds(roundsResult.data as GameRound[]);
       }
       setLoading(false);
     };
 
     fetchGame();
-  }, [user, id]);
+  }, [id]);
 
   useEffect(() => {
     if (!isLoaded || rounds.length === 0) return;
@@ -164,17 +170,17 @@ export default function GameDetail() {
     }
   }, [isLoaded, rounds, selectedRound]);
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center p-8">
-          <h2 className="font-display text-2xl font-bold mb-4">Sign in Required</h2>
-          <p className="text-muted-foreground mb-6">Please sign in to view game details</p>
-          <Link to="/login" className="game-button inline-block">Sign In</Link>
-        </div>
-      </div>
-    );
-  }
+  const getBackLink = () => {
+    if (backTo === 'leaderboard') return '/leaderboard';
+    return '/history';
+  };
+
+  const formatLocation = (city: string | null, country: string | null) => {
+    const parts: string[] = [];
+    if (city) parts.push(city);
+    if (country) parts.push(country);
+    return parts.length > 0 ? parts.join(', ') : 'Unknown location';
+  };
 
   if (loading) {
     return (
@@ -189,13 +195,15 @@ export default function GameDetail() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center p-8">
           <h2 className="font-display text-2xl font-bold mb-4">Game not found</h2>
-          <Link to="/history" className="game-button inline-block">Back to History</Link>
+          <Link to={getBackLink()} className="game-button inline-block">Go Back</Link>
         </div>
       </div>
     );
   }
 
   const currentRound = rounds[selectedRound];
+  const actualLocation = formatLocation(currentRound.actual_city, currentRound.actual_country);
+  const guessLocation = formatLocation(currentRound.guess_city, currentRound.guess_country);
 
   return (
     <div className="min-h-screen bg-background">
@@ -203,7 +211,7 @@ export default function GameDetail() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Link to="/history" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors">
+            <Link to={getBackLink()} className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
@@ -254,6 +262,24 @@ export default function GameDetail() {
           >
             <ChevronRight className="w-4 h-4" />
           </Button>
+        </div>
+
+        {/* Location Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="bg-score-gold/10 border border-score-gold/20 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Globe className="w-5 h-5 text-score-gold" />
+              <span className="text-sm text-muted-foreground">Actual Location</span>
+            </div>
+            <p className="font-display font-semibold text-score-gold">{actualLocation}</p>
+          </div>
+          <div className="bg-primary/10 border border-primary/20 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <MapPin className="w-5 h-5 text-primary" />
+              <span className="text-sm text-muted-foreground">Your Guess</span>
+            </div>
+            <p className="font-display font-semibold text-primary">{guessLocation}</p>
+          </div>
         </div>
 
         {/* Round Stats */}
