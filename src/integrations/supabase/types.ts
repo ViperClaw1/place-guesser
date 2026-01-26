@@ -14,10 +14,133 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      game_rounds: {
+        Row: {
+          actual_lat: number
+          actual_lng: number
+          created_at: string
+          distance_km: number | null
+          game_id: string
+          guess_lat: number | null
+          guess_lng: number | null
+          id: string
+          round_number: number
+          score: number | null
+        }
+        Insert: {
+          actual_lat: number
+          actual_lng: number
+          created_at?: string
+          distance_km?: number | null
+          game_id: string
+          guess_lat?: number | null
+          guess_lng?: number | null
+          id?: string
+          round_number: number
+          score?: number | null
+        }
+        Update: {
+          actual_lat?: number
+          actual_lng?: number
+          created_at?: string
+          distance_km?: number | null
+          game_id?: string
+          guess_lat?: number | null
+          guess_lng?: number | null
+          id?: string
+          round_number?: number
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_rounds_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      games: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          rounds_played: number | null
+          status: string | null
+          total_score: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          rounds_played?: number | null
+          status?: string | null
+          total_score?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          rounds_played?: number | null
+          status?: string | null
+          total_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          best_score: number | null
+          created_at: string
+          id: string
+          total_games: number | null
+          total_score: number | null
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          best_score?: number | null
+          created_at?: string
+          id?: string
+          total_games?: number | null
+          total_score?: number | null
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          best_score?: number | null
+          created_at?: string
+          id?: string
+          total_games?: number | null
+          total_score?: number | null
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      leaderboard: {
+        Row: {
+          avatar_url: string | null
+          best_score: number | null
+          id: string | null
+          rank: number | null
+          total_games: number | null
+          total_score: number | null
+          username: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
