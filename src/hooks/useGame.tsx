@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { getRandomLocation, resetUsedLocations } from '@/lib/locations';
+import { reverseGeocode, LocationInfo } from '@/lib/geocoding';
 
 interface Location {
   lat: number;
@@ -13,6 +15,7 @@ interface RoundResult {
   guessLocation: Location | null;
   distance: number;
   score: number;
+  locationInfo: LocationInfo | null;
 }
 
 interface GameState {
@@ -26,30 +29,6 @@ interface GameState {
   isRoundComplete: boolean;
   isGameComplete: boolean;
 }
-
-// Random locations around the world for Street View
-const WORLD_LOCATIONS: Location[] = [
-  { lat: 48.8584, lng: 2.2945 }, // Eiffel Tower, Paris
-  { lat: 40.7580, lng: -73.9855 }, // Times Square, NYC
-  { lat: 51.5007, lng: -0.1246 }, // Big Ben, London
-  { lat: 35.6762, lng: 139.6503 }, // Tokyo
-  { lat: -33.8568, lng: 151.2153 }, // Sydney Opera House
-  { lat: 41.9029, lng: 12.4534 }, // Vatican City
-  { lat: 37.8199, lng: -122.4783 }, // Golden Gate Bridge
-  { lat: 25.1972, lng: 55.2744 }, // Dubai
-  { lat: 55.7539, lng: 37.6208 }, // Moscow
-  { lat: -22.9519, lng: -43.2105 }, // Rio de Janeiro
-  { lat: 52.3676, lng: 4.9041 }, // Amsterdam
-  { lat: 59.3293, lng: 18.0686 }, // Stockholm
-  { lat: 41.3851, lng: 2.1734 }, // Barcelona
-  { lat: 50.0755, lng: 14.4378 }, // Prague
-  { lat: 45.4408, lng: 12.3155 }, // Venice
-  { lat: 47.5162, lng: 19.0552 }, // Budapest
-  { lat: 38.7223, lng: -9.1393 }, // Lisbon
-  { lat: 43.7696, lng: 11.2558 }, // Florence
-  { lat: 53.3498, lng: -6.2603 }, // Dublin
-  { lat: 48.2082, lng: 16.3738 }, // Vienna
-];
 
 const TOTAL_ROUNDS = 5;
 
@@ -74,10 +53,6 @@ function calculateScore(distance: number): number {
   return score;
 }
 
-function getRandomLocation(): Location {
-  return WORLD_LOCATIONS[Math.floor(Math.random() * WORLD_LOCATIONS.length)];
-}
-
 export function useGame() {
   const { user } = useAuth();
   const [gameState, setGameState] = useState<GameState>({
@@ -93,6 +68,8 @@ export function useGame() {
   });
 
   const startNewGame = useCallback(async () => {
+    // Reset used locations for a fresh game
+    resetUsedLocations();
     const newLocation = getRandomLocation();
     
     let gameId: string | null = null;
@@ -132,12 +109,19 @@ export function useGame() {
     const distance = calculateDistance(gameState.currentLocation, gameState.guessLocation);
     const score = calculateScore(distance);
 
+    // Get location info via reverse geocoding
+    const locationInfo = await reverseGeocode(
+      gameState.currentLocation.lat,
+      gameState.currentLocation.lng
+    );
+
     const roundResult: RoundResult = {
       roundNumber: gameState.currentRound,
       actualLocation: gameState.currentLocation,
       guessLocation: gameState.guessLocation,
       distance,
       score,
+      locationInfo,
     };
 
     // Save round to database

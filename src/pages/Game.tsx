@@ -92,6 +92,10 @@ export default function Game() {
           isLastRound={gameState.isGameComplete}
           onNextRound={nextRound}
           onNewGame={startNewGame}
+          isLoaded={isLoaded}
+          actualLocation={gameState.roundResults[gameState.roundResults.length - 1].actualLocation}
+          guessLocation={gameState.roundResults[gameState.roundResults.length - 1].guessLocation!}
+          locationInfo={gameState.roundResults[gameState.roundResults.length - 1].locationInfo}
         />
       )}
     </div>

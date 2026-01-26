@@ -27,6 +27,8 @@ export function GuessMap({ isLoaded, onGuess, guessLocation, disabled }: GuessMa
       streetViewControl: false,
       mapTypeControl: false,
       fullscreenControl: false,
+      draggableCursor: disabled ? 'default' : 'pointer',
+      draggingCursor: 'grabbing',
       styles: [
         {
           elementType: 'geometry',
