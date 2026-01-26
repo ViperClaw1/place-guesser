@@ -2,12 +2,18 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-export function useGoogleMaps() {
+interface UseGoogleMapsOptions {
+  enabled?: boolean;
+}
+
+export function useGoogleMaps({ enabled = true }: UseGoogleMapsOptions = {}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+
     const loadGoogleMaps = async () => {
       if (window.google) {
         setIsLoaded(true);
@@ -44,7 +50,7 @@ export function useGoogleMaps() {
     };
 
     loadGoogleMaps();
-  }, []);
+  }, [enabled]);
 
   return { isLoaded, error, apiKey };
 }

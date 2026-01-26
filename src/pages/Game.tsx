@@ -12,7 +12,7 @@ import { ArrowLeft } from 'lucide-react';
 
 export default function Game() {
   const { user, loading: authLoading } = useAuth();
-  const { isLoaded, error } = useGoogleMaps();
+  const { isLoaded, error } = useGoogleMaps({ enabled: !!user });
   const { gameState, startNewGame, setGuess, submitGuess, nextRound } = useGame();
 
   useEffect(() => {
