@@ -47,6 +47,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        game: {
+          bg: "hsl(var(--game-bg))",
+          overlay: "hsl(var(--game-overlay))",
+          glow: "hsl(var(--game-glow))",
+        },
+        score: {
+          gold: "hsl(var(--score-gold))",
+          silver: "hsl(var(--score-silver))",
+          bronze: "hsl(var(--score-bronze))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +75,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
