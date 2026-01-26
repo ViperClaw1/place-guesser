@@ -1,23 +1,30 @@
 import { useEffect } from 'react';
 import { useGoogleMaps } from '@/hooks/useGoogleMaps';
 import { useGame } from '@/hooks/useGame';
+import { useAuth } from '@/hooks/useAuth';
 import { StreetView } from '@/components/game/StreetView';
 import { GuessMap } from '@/components/game/GuessMap';
 import { ScoreDisplay } from '@/components/game/ScoreDisplay';
 import { GameControls } from '@/components/game/GameControls';
 import { RoundResult } from '@/components/game/RoundResult';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 export default function Game() {
+  const { user, loading: authLoading } = useAuth();
   const { isLoaded, error } = useGoogleMaps();
   const { gameState, startNewGame, setGuess, submitGuess, nextRound } = useGame();
 
   useEffect(() => {
-    if (isLoaded && !gameState.currentLocation) {
+    if (isLoaded && !gameState.currentLocation && user) {
       startNewGame();
     }
-  }, [isLoaded, gameState.currentLocation, startNewGame]);
+  }, [isLoaded, gameState.currentLocation, startNewGame, user]);
+
+  // Redirect to login if not authenticated
+  if (!authLoading && !user) {
+    return <Navigate to="/login" replace />;
+  }
 
   if (error) {
     return (
