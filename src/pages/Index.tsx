@@ -55,7 +55,7 @@ export default function Index() {
           </p>
 
           <div className="flex-col items-center justify-center gap-[16px] flex sm:flex-row">
-            <Link to="/game" className="game-button inline-flex items-center justify-center gap-2 text-lg my-[5px] mx-[5px] bg-secondary px-[16px] py-[10px]">
+            <Link to="/game" className="game-button inline-flex items-center justify-center gap-2 text-lg my-[5px] mx-[5px] px-[16px] py-[10px] bg-secondary-foreground">
               <Play className="w-5 h-5" />
               Start Playing
             </Link>
