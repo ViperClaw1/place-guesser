@@ -195,17 +195,20 @@
   }
 
   .game-button {
-    @apply px-6 py-3 rounded-lg font-semibold text-primary-foreground transition-all duration-200 bg-primary;
+    @apply px-6 py-3 rounded-lg font-semibold text-primary-foreground bg-primary;
     box-shadow: 0 4px 20px hsl(var(--game-glow));
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, filter 0.2s ease-out;
   }
 
   .game-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px hsl(var(--game-glow));
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px hsl(var(--game-glow));
+    filter: brightness(1.1);
   }
 
   .game-button:active {
-    transform: translateY(0);
+    transform: translateY(-1px) scale(1.01);
+    transition-duration: 0.1s;
   }
 
   .result-card {
