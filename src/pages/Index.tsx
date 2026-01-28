@@ -54,12 +54,12 @@ export default function Index() {
             Drop into a random Street View location and guess where you are. Test your geography knowledge!
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/game" className="game-button inline-flex items-center justify-center gap-2 text-lg px-[10px] py-[10px] my-[5px] mx-[5px] bg-secondary">
+          <div className="flex-col items-center justify-center gap-[16px] flex sm:flex-row">
+            <Link to="/game" className="game-button inline-flex items-center justify-center gap-2 text-lg my-[5px] mx-[5px] bg-secondary px-[16px] py-[10px]">
               <Play className="w-5 h-5" />
               Start Playing
             </Link>
-            {!user && !loading && <Link to="/signup" className="px-6 py-3 rounded-lg font-semibold border border-border hover:bg-secondary transition-colors">
+            {!user && !loading && <Link to="/signup" className="rounded-lg font-semibold border border-border hover:bg-secondary transition-colors py-[12px] px-[24px]">
                 Create Account
               </Link>}
           </div>
