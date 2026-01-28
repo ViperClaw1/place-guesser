@@ -203,40 +203,22 @@
   }
 
   button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 30px hsl(var(--game-glow));
-    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px hsl(var(--game-glow));
   }
 
   .game-button {
-    @apply px-6 py-3 rounded-lg font-semibold text-primary-foreground bg-primary;
+    @apply px-6 py-3 rounded-lg font-semibold text-primary-foreground transition-all duration-200 bg-primary;
     box-shadow: 0 4px 20px hsl(var(--game-glow));
-    transition:
-      transform 0.2s ease-out,
-      box-shadow 0.2s ease-out,
-      filter 0.2s ease-out;
-  }
-
-  button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 30px hsl(var(--game-glow));
-    filter: brightness(1.1);
-  }
-
-  button:active {
-    transform: translateY(-1px) scale(1.01);
-    transition-duration: 0.1s;
   }
 
   .game-button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 30px hsl(var(--game-glow));
-    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px hsl(var(--game-glow));
   }
 
   .game-button:active {
-    transform: translateY(-1px) scale(1.01);
-    transition-duration: 0.1s;
+    transform: translateY(0);
   }
 
   .result-card {
