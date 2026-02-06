@@ -26,7 +26,8 @@ export function StreetView({ lat, lng, isLoaded }: StreetViewProps) {
       fullscreenControl: false,
       motionTracking: false,
       motionTrackingControl: false,
-    });
+      source: google.maps.StreetViewSource.OUTDOOR,
+    } as google.maps.StreetViewPanoramaOptions);
 
     panoramaRef.current = panorama;
 
