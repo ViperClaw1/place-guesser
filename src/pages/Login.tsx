@@ -168,6 +168,10 @@ export default function Login() {
             </div>
           </div>
 
+          <Button type="submit" disabled={loading} className="w-full game-button">
+            {loading ? "Signing in..." : "Sign In"}
+          </Button>
+
           <button
             type="button"
             onClick={() => setShowForgotPassword(true)}
@@ -175,10 +179,6 @@ export default function Login() {
           >
             Forgot password?
           </button>
-
-          <Button type="submit" disabled={loading} className="w-full game-button">
-            {loading ? "Signing in..." : "Sign In"}
-          </Button>
         </form>
 
         <p className="text-center text-muted-foreground mt-6">
