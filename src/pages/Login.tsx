@@ -150,16 +150,7 @@ export default function Login() {
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <button
-                type="button"
-                onClick={() => setShowForgotPassword(true)}
-                className="text-sm text-primary hover:underline"
-              >
-                Forgot password?
-              </button>
-            </div>
+            <Label htmlFor="password">Password</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -179,6 +170,14 @@ export default function Login() {
               </button>
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setShowForgotPassword(true)}
+            className="text-sm text-primary hover:underline w-full text-left"
+          >
+            Forgot password?
+          </button>
 
           <Button type="submit" disabled={loading} className="w-full game-button">
             {loading ? 'Signing in...' : 'Sign In'}

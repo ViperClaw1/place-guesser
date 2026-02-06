@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Globe, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');
@@ -14,21 +15,34 @@ export default function ResetPassword() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { updatePassword, session } = useAuth();
+  const [isValidRecovery, setIsValidRecovery] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const { updatePassword } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user arrived via password reset link (they'll have a session)
-    if (!session) {
-      // Give some time for the session to be established from the URL token
-      const timeout = setTimeout(() => {
-        if (!session) {
-          setError('Invalid or expired reset link. Please request a new password reset.');
-        }
-      }, 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [session]);
+    // Listen for the PASSWORD_RECOVERY event which fires when user clicks reset link
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsValidRecovery(true);
+        setCheckingSession(false);
+      } else if (event === 'SIGNED_IN' && session) {
+        // User might already have a session from recovery
+        setIsValidRecovery(true);
+        setCheckingSession(false);
+      }
+    });
+
+    // Also check if there's already an active session (for page refresh scenarios)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setIsValidRecovery(true);
+      }
+      setCheckingSession(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,9 +149,15 @@ export default function ResetPassword() {
             </div>
           </div>
 
-          <Button type="submit" disabled={loading || !session} className="w-full game-button">
-            {loading ? 'Updating...' : 'Update Password'}
+          <Button type="submit" disabled={loading || checkingSession || !isValidRecovery} className="w-full game-button">
+            {checkingSession ? 'Verifying...' : loading ? 'Updating...' : 'Update Password'}
           </Button>
+
+          {!checkingSession && !isValidRecovery && (
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-3 text-sm text-center">
+              Invalid or expired reset link. Please request a new password reset.
+            </div>
+          )}
         </form>
       </div>
     </div>
