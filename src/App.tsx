@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import Leaderboard from "./pages/Leaderboard";
 import History from "./pages/History";
 import GameDetail from "./pages/GameDetail";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/history" element={<History />} />
             <Route path="/history/:id" element={<GameDetail />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
