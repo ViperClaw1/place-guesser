@@ -194,7 +194,7 @@
   }
 
   .map-overlay-expanded {
-    @apply w-[500px] h-[350px];
+    @apply w-[calc(100vw-3rem)] h-[calc(100vh-3rem)] bottom-6 right-6;
   }
 
   .score-display {
