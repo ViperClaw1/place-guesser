@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { Trophy, User, ArrowLeft, ChevronDown, ChevronUp, MapPin, Navigation, Calendar, Eye } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Trophy, User, ArrowLeft, ChevronDown, ChevronUp, MapPin, Navigation, Calendar, Eye, LogIn } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 
@@ -37,6 +38,7 @@ interface GameRound {
 
 export default function Leaderboard() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
@@ -146,9 +148,18 @@ export default function Leaderboard() {
           </div>
         </div>
 
-        {loading ? (
+        {authLoading || loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : !user ? (
+          <div className="text-center py-20 bg-card rounded-2xl">
+            <LogIn className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h2 className="font-display text-xl font-semibold mb-2">Sign in required</h2>
+            <p className="text-muted-foreground mb-6">Please sign in to view the leaderboard</p>
+            <Link to="/login" className="game-button inline-block">
+              Sign In
+            </Link>
           </div>
         ) : entries.length === 0 ? (
           <div className="text-center py-20 bg-card rounded-2xl">
