@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Globe, Eye, EyeOff, ArrowLeft, Mail } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Globe, Eye, EyeOff, ArrowLeft, Mail } from "lucide-react";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
+  const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
   const { signIn, resetPassword } = useAuth();
@@ -21,26 +21,26 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     const { error } = await signIn(email, password);
-    
+
     if (error) {
       setError(error.message);
       setLoading(false);
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setResetLoading(true);
 
     const { error } = await resetPassword(resetEmail);
-    
+
     if (error) {
       setError(error.message);
       setResetLoading(false);
@@ -58,8 +58,8 @@ export default function Login() {
             onClick={() => {
               setShowForgotPassword(false);
               setResetSuccess(false);
-              setError('');
-              setResetEmail('');
+              setError("");
+              setResetEmail("");
             }}
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
           >
@@ -73,10 +73,7 @@ export default function Login() {
             </div>
             <h1 className="font-display text-3xl font-bold text-gradient">Reset Password</h1>
             <p className="text-muted-foreground mt-2">
-              {resetSuccess 
-                ? "Check your email for a reset link" 
-                : "Enter your email to receive a reset link"
-              }
+              {resetSuccess ? "Check your email for a reset link" : "Enter your email to receive a reset link"}
             </p>
           </div>
 
@@ -109,7 +106,7 @@ export default function Login() {
               </div>
 
               <Button type="submit" disabled={resetLoading} className="w-full game-button">
-                {resetLoading ? 'Sending...' : 'Send Reset Link'}
+                {resetLoading ? "Sending..." : "Send Reset Link"}
               </Button>
             </form>
           )}
@@ -154,7 +151,7 @@ export default function Login() {
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -174,18 +171,18 @@ export default function Login() {
           <button
             type="button"
             onClick={() => setShowForgotPassword(true)}
-            className="text-sm text-primary hover:underline w-full text-left"
+            className="text-sm text-primary hover:underline w-full text-right"
           >
             Forgot password?
           </button>
 
           <Button type="submit" disabled={loading} className="w-full game-button">
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
 
         <p className="text-center text-muted-foreground mt-6">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link to="/signup" className="text-primary hover:underline">
             Sign up
           </Link>
