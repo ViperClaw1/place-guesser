@@ -1,38 +1,37 @@
 # Globe Trotter Quest
 
-Create a GeoGuessr clone game with the following features:
+A GeoGuessr-style geography game with the following features:
 
 - Display a random Google Street View image in the main viewport
 - Show a world map where users can click to place their guess
-- Calculate and display the distance between the guess and actual direction
-- Show a score based on how clear the guess was
+- Calculate and display the distance between the guess and the actual location
+- Show a score based on how close the guess was
 - Include a "Next Round" button to load a new location
-- Add a simple scoring system (closer guesses = higher points)
-- Clean modern UI with the Street View taking up most of the screen
-- Map should be similar and positioned to the side or bottom
+- Use a simple scoring system (closer guesses = higher points)
+- Clean, modern UI with the Street View taking up most of the screen
+- Smaller map positioned to the side or bottom
 
-Use Google Maps for the street view and the map.
+Google Maps powers both the Street View and the map.
 
-Make it responsive and fun to play. Use a clean design similar to the real GeoGuessr.
+The game is responsive, fun to play, and has a clean design similar to the real GeoGuessr.
 
-**Add there Features as well**
-- Add user authentication with email and password login
-- Create a database to store user games and scores
-- Build a global leaderboard that shows all players' best scores
-- Allow users to browse previous games and see their guesses accuracy for each round
-- Show the Street View location for each completed round so players can review their guesses
+**Additional features**
 
-This project was built with [Lovable](https://lovable.dev).
+- User authentication with email and password login
+- A database that stores user games and scores
+- A global leaderboard that shows all players' best scores
+- Browsing of previous games, with guess accuracy for each round
+- The Street View location for each completed round, so players can review their guesses
 
-**Live app**: https://place-guesser.lovable.app
+The app is also deployed and playable online.
 
-## Build with Lovable
+## Visual Development
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/ea6de580-aed1-4c52-add8-647018b69162).
+This project was built with an AI-powered app builder, and development can continue there.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- **Ship faster**: describe what you want to build and the builder handles the code.
+- **Stay in sync**: every change made in the builder is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into the builder, ready for your next prompt.
 
 ## Development
 
